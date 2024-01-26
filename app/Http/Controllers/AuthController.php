@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
 use App\Support\Exceptions\OAuthException;
 use App\Support\Traits\Authenticatable;
 use Illuminate\Http\JsonResponse;
