@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -71,6 +72,11 @@ class User extends Authenticatable implements JWTSubject, FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return Auth::user()->admin;
+        return $this->admin;
+    }
+
+    public function Teams() :BelongsToMany
+    {
+        return $this->belongsToMany(Team::class);
     }
 }

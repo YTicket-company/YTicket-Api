@@ -6,6 +6,7 @@ use App\Filament\Resources\TeamResource\Pages;
 use App\Filament\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +25,10 @@ class TeamResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make("name")->required(),
-                Forms\Components\Textarea::make("signature")
+                Forms\Components\Textarea::make("signature"),
+                Select::make('users')
+                    ->multiple()
+                    ->relationship('users', 'name')
             ]);
     }
 
@@ -51,7 +55,7 @@ class TeamResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\UserRelationManager::class
         ];
     }
 
