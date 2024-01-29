@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PlatformResource\Pages;
-use App\Filament\Resources\PlatformResource\RelationManagers;
-use App\Models\Platform;
+use App\Filament\Resources\ClientResource\Pages;
+use App\Filament\Resources\ClientResource\RelationManagers;
+use App\Models\Client;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -13,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PlatformResource extends Resource
+class ClientResource extends Resource
 {
-    protected static ?string $model = Platform::class;
+    protected static ?string $model = Client::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,8 +24,13 @@ class PlatformResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make("identifier")->integer()->required(),
                 Forms\Components\TextInput::make("name")->required(),
-                Forms\Components\ColorPicker::make("color")->hex()->default("#fcba03"),
+                Select::make('platform_id')
+                    ->relationship('platform', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required()
             ]);
     }
 
@@ -33,7 +39,7 @@ class PlatformResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make("name"),
-                Tables\Columns\ColorColumn::make("color")
+                Tables\Columns\TextColumn::make("identifier")
             ])
             ->filters([
                 //
@@ -51,16 +57,16 @@ class PlatformResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPlatforms::route('/'),
-            'create' => Pages\CreatePlatform::route('/create'),
-            'edit' => Pages\EditPlatform::route('/{record}/edit'),
+            'index' => Pages\ListClients::route('/'),
+            'create' => Pages\CreateClient::route('/create'),
+            'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
     }
 }
