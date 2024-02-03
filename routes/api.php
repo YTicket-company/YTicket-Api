@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\TicketApiController;
 use App\Models\Platform;
 use App\Models\Status;
@@ -45,3 +46,5 @@ Route::resource("client", ClientController::class, [
 ]);
 
 Route::get("/client/ident/{identifier}", [ClientController::class, "getByIdentifier"]);
+
+Route::post("/message", [MessageController::class, "store"]);

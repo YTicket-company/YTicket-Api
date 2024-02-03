@@ -17,6 +17,7 @@ class TicketRequest extends FormRequest
             'name' => 'required|min:4',
             'status_id' => 'required|exists:App\Models\Status,id',
             'client_identifier' => 'required|exists:App\Models\Client,identifier',
+            'channel_id' => "integer|required"
         ];
     }
 }
