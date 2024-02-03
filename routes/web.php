@@ -14,5 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+
+//    \App\Models\User::create([
+//        "name" => "mazbaz",
+//        "email" => "mrlog42@gmail.com",
+//        "password" => "passworrrrd1234A"
+//    ]);
     return view('welcome');
 });

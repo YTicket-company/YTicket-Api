@@ -1,0 +1,53 @@
+version: '3.5'
+
+services:
+  laravel-app:
+    container_name: laravel-app
+    image: mazbaz/yticket:prod
+    ports:
+      - 8001:80
+    environment:
+        - APP_NAME=MazBaz
+        - APP_ENV=local
+        - APP_KEY=base64:rHU7Gnt8+ws+m/oLl4kgPa1a5F5/M9Kd2cy2Yts+sm0=
+        - APP_DEBUG=true
+        - APP_URL=http://localhost
+        - JWT_SECRET=hM75xD3AYMSBViEF694v0fBWdz5rYKQ63VTNzwBi2QNrQdGetBpF47B0pkKPQHVV
+        - DB_CONNECTION=mysql
+        - DB_HOST=mysql-db
+        - DB_PORT=3306
+        - DB_DATABASE=Yticket
+        - DB_USERNAME=my_user
+        - DB_PASSWORD=my_password
+    networks:
+          - traefik
+          - laravel-mysql-network
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.laravel-app.rule=Host(`yticket.mazbaz.fr`)"
+      - "traefik.http.routers.laravel-app.entrypoints=websecure"
+      - "traefik.http.routers.laravel-app.tls.certresolver=letsencryptresolver"
+
+  mysql-db:
+    image: mysql:latest
+    container_name: mysql-db
+
+    environment:
+        MYSQL_ROOT_PASSWORD: my-secret-pw
+        MYSQL_DATABASE: Yticket
+        MYSQL_USER: my_user
+        MYSQL_PASSWORD: my_password
+    volumes:
+        - mysql-data:/var/lib/mysql
+    networks:
+      - laravel-mysql-network
+
+volumes:
+  mysql-data:
+
+networks:
+  traefik:
+    external:
+      name: traefik
+  laravel-mysql-network:
