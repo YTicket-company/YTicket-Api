@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\TicketApiController;
+use App\Models\Platform;
+use App\Models\Status;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -15,12 +18,30 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth.token')->get('/me', function (Request $request) {
-    return $request->user();
+Route::name("auth.")->prefix("auth")->group(function () {
+
+    Route::controller(AuthController::class)->group(function ($router) {
+        Route::post('login', 'login')->name('login');
+        Route::post('logout', 'logout')->name('logout')->middleware('auth.token');
+        Route::post('refresh', 'refresh')->name('refresh');
+        Route::middleware('auth.token')->get('/me', "me");
+    });
 });
 
-Route::controller(AuthController::class)->prefix("auth")->name("auth.")->group(function ($router) {
-    Route::post('login', 'login')->name('login');
-    Route::post('logout', 'logout')->name('logout')->middleware('auth.token');
-    Route::post('refresh', 'refresh')->name('refresh');
+Route::resource("ticket", TicketApiController::class, [
+    'except' => ["edit"],
+]);
+
+Route::get("status", function () {
+    return Status::orderBy('order', 'DESC')->get();
 });
+
+Route::get("platforms", function () {
+    return Platform::all();
+});
+
+Route::resource("client", ClientController::class, [
+    'except' => ["edit", "update", "index", "destroy", "create"],
+]);
+
+Route::get("/client/ident/{identifier}", [ClientController::class, "getByIdentifier"]);

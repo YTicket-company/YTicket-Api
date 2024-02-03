@@ -7,6 +7,7 @@ use App\Support\Exceptions\OAuthException;
 use App\Support\Traits\Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -46,5 +47,14 @@ class AuthController extends Controller
         auth()->logout();
 
         return new JsonResponse(['sucess' => true]);
+    }
+
+    /**
+     * Return the current user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me(Request $request) {
+        return $request->user();
     }
 }
