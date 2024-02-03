@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Ticket extends Model
+class Message extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    protected $with = ["messages"];
-    public function status(): BelongsTo
+    public function ticket(): BelongsTo
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Ticket::class);
     }
 
     public function client(): BelongsTo
@@ -24,8 +22,8 @@ class Ticket extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function messages(): HasMany
+    public function User(): BelongsTo
     {
-        return $this->hasMany(Message::class);
+        return $this->belongsTo(User::class);
     }
 }

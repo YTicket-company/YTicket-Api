@@ -25,6 +25,7 @@ class TicketApiController extends Controller
             "name" => $request->name,
             "status_id" => $request->status_id,
             "client_id" => Client::where("identifier", $request->client_identifier)->first()->id,
+            "channel_id" => $request->channel_id
         ]);
 
         return $ticket;
