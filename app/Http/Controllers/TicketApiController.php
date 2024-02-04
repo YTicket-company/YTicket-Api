@@ -48,14 +48,13 @@ class TicketApiController extends Controller
         $request->validate([
             'name' => 'min:4',
             'status_id' => 'exists:App\Models\Status,id',
-            'client_identifier' => 'exists:App\Models\Client,identifier',
             'channel_id' => "integer"
         ]);
 
         $ticket->update([
             "name" => $request->name ?? $ticket->name,
             "status_id" => $request->status_id ?? $ticket->status_id,
-            "client_id" => $request->client_identifier ? Client::where("identifier", $request->client_identifier)->first()->id : $ticket->client_identifier,
+            "channel_id" => $request->channel_id ?? $ticket->channel_id
         ]);
 
         return $ticket;
