@@ -12,6 +12,10 @@ class Message extends Model
 
     protected $guarded = [];
 
+    protected $with = [
+        "client", "User"
+    ];
+
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
