@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TicketRequest;
 use App\Models\Client;
 use App\Models\Ticket;
+use Illuminate\Http\Request;
 
 class TicketApiController extends Controller
 {
@@ -42,12 +43,19 @@ class TicketApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TicketRequest $request, Ticket $ticket)
+    public function update(Request $request, Ticket $ticket)
     {
+        $request->validate([
+            'name' => 'min:4',
+            'status_id' => 'exists:App\Models\Status,id',
+            'client_identifier' => 'exists:App\Models\Client,identifier',
+            'channel_id' => "integer"
+        ]);
+
         $ticket->update([
-            "name" => $request->name,
-            "status_id" => $request->status_id,
-            "client_id" => Client::where("identifier", $request->client_identifier)->first()->id,
+            "name" => $request->name ?? $ticket->name,
+            "status_id" => $request->status_id ?? $ticket->status_id,
+            "client_id" => $request->client_identifier ? Client::where("identifier", $request->client_identifier)->first()->id : $ticket->client_identifier,
         ]);
 
         return $ticket;
