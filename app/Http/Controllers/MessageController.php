@@ -13,7 +13,7 @@ class MessageController extends Controller
         $request->validate([
             "ticket_id" => "required|exists:App\Models\Ticket,id",
             "client_id" => "required_without:user_id|exists:App\Models\Client,id",
-            "user_id" => "required_without:client_id|exists:App\Models\User",
+            "user_id" => "required_without:client_id|exists:App\Models\User,id",
             "message" => "required"
         ]);
 
