@@ -33,6 +33,9 @@ Route::resource("ticket", TicketApiController::class, [
     'except' => ["edit"],
 ]);
 
+Route::get("/ticket/ident/{identifier}", [TicketApiController::class, "getByIdentifier"]);
+
+
 Route::get("status", function () {
     return Status::orderBy('order', 'DESC')->get();
 });
