@@ -60,4 +60,13 @@ class TicketApiController extends Controller
     {
         return $ticket->delete();
     }
+
+    public function getByIdentifier(int $identifier)
+    {
+        $client = Client::where('identifier', $identifier)->firstOrFail();
+
+        // Récupérer tous les tickets pour ce client
+        $tickets = $client->tickets;
+        return $tickets ?? abort(404);
+    }
 }
