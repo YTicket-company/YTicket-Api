@@ -77,4 +77,10 @@ class TicketApiController extends Controller
         $tickets = $client->tickets;
         return $tickets ?? abort(404);
     }
+
+    public function getOpenByIdentifier(int $identifier) {
+        return Ticket::whereHas('client', function ($query) use ($identifier) {
+            return $query->where('identifier', $identifier);
+        })->where("status_id", 1)->first();
+    }
 }

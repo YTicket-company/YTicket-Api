@@ -34,6 +34,7 @@ Route::resource("ticket", TicketApiController::class, [
 ]);
 
 Route::get("/ticket/ident/{identifier}", [TicketApiController::class, "getByIdentifier"]);
+Route::get("/ticket/opened/ident/{identifier}", [TicketApiController::class, "getOpenByIdentifier"]);
 
 
 Route::get("status", function () {
