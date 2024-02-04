@@ -13,7 +13,7 @@ class Ticket extends Model
 
     protected $guarded = [];
 
-    protected $with = ["messages"];
+    protected $with = ["messages", "client", "status"];
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
